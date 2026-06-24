@@ -32,7 +32,7 @@ jobs:
       # À configurer dans : Settings > Secrets and variables > Actions > New repository secret
       #   Name = WEATHER_API_KEY
       - name: Create local.properties
-        run: echo "weather.api.key=${{ secrets.WEATHER_API_KEY }}" > local.properties
+        run: echo "photographer.api.key=${{ secrets.PHOTOGRAPHER_API_KEY }}" > local.properties
 
       - name: Make gradlew executable
         run: chmod +x ./gradlew
