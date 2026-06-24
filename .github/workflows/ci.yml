@@ -73,96 +73,96 @@ jobs:
           if-no-files-found: ignore
 
   # ---------------------------------------------------------------------------
-  # Desktop Windows : produit le .msi installable (runner Windows).
+  # Desktop Windows : COMMENTÉ pour gagner du temps/quota (étape 6 du TP).
   # ---------------------------------------------------------------------------
-  desktop-windows:
-    name: Build Desktop (Windows .msi)
-    runs-on: windows-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          distribution: corretto
-          java-version: 21
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-
-      - name: Create local.properties
-        shell: pwsh
-        run: Set-Content -Path local.properties -Value 'weather.api.key=${{ secrets.WEATHER_API_KEY }}' -Encoding ascii
-
-      - name: Build Desktop .msi
-        run: ./gradlew :composeApp:packageMsi
-
-      - name: Upload Desktop .msi (Windows)
-        uses: actions/upload-artifact@v4
-        with:
-          name: desktopApp-windows-msi
-          path: composeApp/build/compose/binaries/main/msi/*.msi
-          if-no-files-found: ignore
+  # desktop-windows:
+  #   name: Build Desktop (Windows .msi)
+  #   runs-on: windows-latest
+  #
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #
+  #     - name: Set up JDK 21
+  #       uses: actions/setup-java@v4
+  #       with:
+  #         distribution: corretto
+  #         java-version: 21
+  #
+  #     - name: Set up Gradle
+  #       uses: gradle/actions/setup-gradle@v4
+  #
+  #     - name: Create local.properties
+  #       shell: pwsh
+  #       run: Set-Content -Path local.properties -Value 'weather.api.key=${{ secrets.WEATHER_API_KEY }}' -Encoding ascii
+  #
+  #     - name: Build Desktop .msi
+  #       run: ./gradlew :composeApp:packageMsi
+  #
+  #     - name: Upload Desktop .msi (Windows)
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: desktopApp-windows-msi
+  #         path: composeApp/build/compose/binaries/main/msi/*.msi
+  #         if-no-files-found: ignore
 
   # ---------------------------------------------------------------------------
-  # iOS : nécessite OBLIGATOIREMENT un runner macOS (~10x plus coûteux en quota).
+  # iOS : COMMENTÉ pour gagner du temps/quota (étape 6 du TP).
   # ---------------------------------------------------------------------------
-  ios:
-    name: Build & Test (iOS)
-    runs-on: macos-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Select latest Xcode
-        run: |
-          sudo xcode-select -s "$(ls -d /Applications/Xcode_*.app | sort -V | tail -n 1)/Contents/Developer"
-          xcodebuild -version
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          distribution: corretto
-          java-version: 21
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-
-      - name: Create local.properties
-        run: echo "weather.api.key=${{ secrets.WEATHER_API_KEY }}" > local.properties
-
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
-
-      - name: Build iOS app (simulator)
-        run: |
-          xcodebuild build \
-            -project iosApp/iosApp.xcodeproj \
-            -target iosApp \
-            -configuration Debug \
-            -sdk iphonesimulator \
-            SYMROOT="$PWD/iosApp/build" \
-            CODE_SIGNING_ALLOWED=NO
-
-      - name: Zip iOS app
-        run: ditto -c -k --keepParent iosApp/build/Debug-iphonesimulator/A03_kmp_mprolead_g1.app A03_kmp_mprolead_g1-simulator.zip
-
-      - name: Upload iOS app (simulator)
-        uses: actions/upload-artifact@v4
-        with:
-          name: iosApp-simulator
-          path: A03_kmp_mprolead_g1-simulator.zip
-          if-no-files-found: ignore
-
-      - name: Run iOS simulator tests
-        run: ./gradlew :composeApp:iosSimulatorArm64Test
-
-      - name: Upload iOS test reports
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-reports-ios
-          path: composeApp/build/reports/tests/
-          if-no-files-found: ignore
+  # ios:
+  #   name: Build & Test (iOS)
+  #   runs-on: macos-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #
+  #     - name: Select latest Xcode
+  #       run: |
+  #         sudo xcode-select -s "$(ls -d /Applications/Xcode_*.app | sort -V | tail -n 1)/Contents/Developer"
+  #         xcodebuild -version
+  #
+  #     - name: Set up JDK 21
+  #       uses: actions/setup-java@v4
+  #       with:
+  #         distribution: corretto
+  #         java-version: 21
+  #
+  #     - name: Set up Gradle
+  #       uses: gradle/actions/setup-gradle@v4
+  #
+  #     - name: Create local.properties
+  #       run: echo "weather.api.key=${{ secrets.WEATHER_API_KEY }}" > local.properties
+  #
+  #     - name: Make gradlew executable
+  #       run: chmod +x ./gradlew
+  #
+  #     - name: Build iOS app (simulator)
+  #       run: |
+  #         xcodebuild build \
+  #           -project iosApp/iosApp.xcodeproj \
+  #           -target iosApp \
+  #           -configuration Debug \
+  #           -sdk iphonesimulator \
+  #           SYMROOT="$PWD/iosApp/build" \
+  #           CODE_SIGNING_ALLOWED=NO
+  #
+  #     - name: Zip iOS app
+  #       run: ditto -c -k --keepParent iosApp/build/Debug-iphonesimulator/A03_kmp_mprolead_g1.app A03_kmp_mprolead_g1-simulator.zip
+  #
+  #     - name: Upload iOS app (simulator)
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: iosApp-simulator
+  #         path: A03_kmp_mprolead_g1-simulator.zip
+  #         if-no-files-found: ignore
+  #
+  #     - name: Run iOS simulator tests
+  #       run: ./gradlew :composeApp:iosSimulatorArm64Test
+  #
+  #     - name: Upload iOS test reports
+  #       if: ${{ always() }}
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: test-reports-ios
+  #         path: composeApp/build/reports/tests/
+  #         if-no-files-found: ignore
