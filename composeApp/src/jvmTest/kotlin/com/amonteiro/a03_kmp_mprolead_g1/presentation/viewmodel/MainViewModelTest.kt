@@ -58,14 +58,14 @@ class MainViewModelTest {
         assertEquals("", vm.errorMessage.value)
     }
 
-//    @Test
-//    fun loadPhotographer_fait_une_vraie_requete() = runBlocking {
-//        val api = PhotographerAPI(buildClient())
-//        try {
-//            val result = api.loadPhotographers()
-//            assertTrue(result.isNotEmpty(), "L'API doit renvoyer au moins un photographe")
-//        } finally {
-//            api.close()
-//        }
-//    }
+    @Test
+    fun loadPhotographer_fait_une_vraie_requete() = runBlocking {
+        val api = PhotographerAPI(buildClient())
+        try {
+            val result = api.loadPhotographers()
+            assertTrue(result.isNotEmpty(), "L'API doit renvoyer au moins un photographe")
+        } finally {
+            api.close()
+        }
+    }
 }
