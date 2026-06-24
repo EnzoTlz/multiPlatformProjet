@@ -1,4 +1,3 @@
-
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
@@ -110,6 +109,10 @@ kotlin {
             implementation(libs.kotlinx.coroutinesSwing)
             //Client de requêtes spécifique au bureau sur JVM donc même qu'Android
             implementation("io.ktor:ktor-client-okhttp:3.2.2")
+        }
+        jvmTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(kotlin("test-junit"))
         }
         iosMain.dependencies {
             //Client de requêtes spécifique à iOS
